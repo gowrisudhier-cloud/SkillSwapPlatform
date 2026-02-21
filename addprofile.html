@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Profile - Skill Swap</title>
+    <link rel="stylesheet" href="addprofile.css">
+
+</head>
+
+<body>
+
+<h1>Add Your Skill Profile</h1>
+
+<form onsubmit="addProfile(); return false;">
+
+    <label>Name:</label><br>
+    <input type="text" id="name" required><br><br>
+
+    <label>Skill You Can Teach:</label><br>
+    <input type="text" id="teach" required><br><br>
+
+    <label>Skill You Want to Learn:</label><br>
+    <input type="text" id="learn" required><br><br>
+
+    <label>About You:</label><br>
+    <textarea id="about" rows="4"></textarea><br><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<br>
+<a href="index.html">⬅ Back to Home</a>
+
+<!-- Link JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>

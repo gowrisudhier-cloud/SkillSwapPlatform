@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --border: #2a2a3d;
+            --accent: #7c5cfc;
+            --accent2: #e05fff;
+            --accent3: #00e5c3;
+            --text: #f0eeff;
+            --text-muted: #8884aa;
+            --card-glow: rgba(124, 92, 252, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(ellipse, rgba(124,92,252,0.08) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -15%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(0,229,195,0.06) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 28px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10,10,15,0.8);
+            backdrop-filter: blur(16px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        header p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        nav a {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        nav a:hover { color: var(--text); background: var(--surface2); }
+        nav a.active { color: var(--accent); background: rgba(124,92,252,0.1); }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 100px 40px 80px;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(124,92,252,0.1);
+            border: 1px solid rgba(124,92,252,0.25);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #a78bfa;
+            margin-bottom: 28px;
+            letter-spacing: 0.04em;
+        }
+        .hero-badge::before {
+            content: '';
+            width: 6px; height: 6px;
+            background: var(--accent3);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; transform: scale(1); }
+            50% { opacity:0.5; transform: scale(0.8); }
+        }
+
+        .hero h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            letter-spacing: -0.04em;
+            line-height: 1.08;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 8px 32px rgba(124,92,252,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,92,252,0.45); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(124,92,252,0.05); }
+
+        /* ─── STATS BAR ─── */
+        .stats-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .stat-item {
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+            padding: 28px 20px;
+            border-right: 1px solid var(--border);
+        }
+        .stat-item:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-top: 4px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* ─── MAIN LAYOUT ─── */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* ─── CARD ─── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124,92,252,0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .card:hover { border-color: rgba(124,92,252,0.3); box-shadow: 0 20px 60px var(--card-glow); }
+        .card:hover::before { opacity: 1; }
+
+        .card-full { grid-column: 1 / -1; }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .section-tag::before {
+            content: '';
+            display: block;
+            width: 16px; height: 2px;
+            background: var(--accent);
+        }
+
+        .card h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+        .card > p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* ─── FORM ─── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            background: rgba(124,92,252,0.04);
+            box-shadow: 0 0 0 3px rgba(124,92,252,0.12);
+        }
+
+        select option { background: var(--surface2); }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[type="submit"], .submit-btn {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: all 0.25s;
+            box-shadow: 0 6px 24px rgba(124,92,252,0.3);
+        }
+        input[type="submit"]:hover, .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 32px rgba(124,92,252,0.45);
+        }
+
+        /* ─── TABLE ─── */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: var(--surface2);
+        }
+
+        th {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid rgba(42,42,61,0.5);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+        tbody tr:hover { background: rgba(124,92,252,0.04); }
+
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+        .skill-teach {
+            background: rgba(0,229,195,0.1);
+            color: var(--accent3);
+            border: 1px solid rgba(0,229,195,0.2);
+        }
+        .skill-learn {
+            background: rgba(124,92,252,0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(124,92,252,0.2);
+        }
+        .cat-badge {
+            background: var(--surface2);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-muted);
+        }
+        .empty-state svg {
+            opacity: 0.3;
+            margin-bottom: 12px;
+        }
+        .empty-state p { font-size: 0.88rem; }
+
+        /* ─── CONTACT ─── */
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .contact-item:hover { border-color: rgba(124,92,252,0.3); }
+        .contact-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(224,95,255,0.15));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .contact-label { font-size: 0.75rem; color: var(--text-muted); }
+        .contact-value { font-size: 0.88rem; font-weight: 500; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 28px 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            background: var(--surface);
+        }
+        footer span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Staggered entrance animation */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        @media (max-width: 900px) {
+            header { padding: 20px 24px; flex-wrap: wrap; gap: 16px; }
+            .main-content { grid-template-columns: 1fr; padding: 24px; gap: 16px; }
+            .card-full { grid-column: 1; }
+            .form-grid { grid-template-columns: 1fr; }
+            .hero { padding: 60px 24px 50px; }
+            .stats-bar { flex-wrap: wrap; }
+            .stat-item { flex: 1 1 40%; border-bottom: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">
+        <div class="logo-mark">SS</div>
+        <div>
+            <h1>Skill Swap</h1>
+            <p>Community Knowledge Exchange</p>
+        </div>
+    </div>
+    <nav>
+        <a href="#" class="active">Home</a>
+        <a href="#profile-form">Add Profile</a>
+        <a href="#community">Community</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge animate-in">Platform is Live · Join 2,400+ Members</div>
+    <h2 class="animate-in delay-1">Teach what you know.<br><span>Learn what you love.</span></h2>
+    <p class="animate-in delay-2">A community built on the belief that everyone has something worth teaching and something worth learning. Find your perfect skill match.</p>
+    <div class="hero-actions animate-in delay-3">
+        <button class="btn-primary" onclick="document.getElementById('profile-form').scrollIntoView({behavior:'smooth'})">Create Your Profile</button>
+        <button class="btn-ghost" onclick="document.getElementById('community').scrollIntoView({behavior:'smooth'})">Explore Community</button>
+    </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar animate-in delay-4">
+    <div class="stat-item">
+        <div class="stat-num">2.4K+</div>
+        <div class="stat-label">Members</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">180+</div>
+        <div class="stat-label">Skills Listed</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">94%</div>
+        <div class="stat-label">Success Rate</div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <!-- ABOUT -->
+    <div class="card animate-in delay-1">
+        <div class="section-tag">About</div>
+        <h2>What is Skill Swap?</h2>
+        <p>Skill Swap is a peer-to-peer learning community where knowledge flows freely. Connect with people who can teach what you want to learn, and share your own expertise in return. No money, just mutual growth.</p>
+        <div style="display:flex; gap:10px; margin-top:24px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:120px; padding:16px; background:var(--surface2); border-radius:12px; border:1px solid var(--border);">
+                <div style="font-size:1.4rem; margin-bottom:4px;">🎯</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">Direct Match</div>
+            </div>
+            <div style="flex:1; min-width:120px; padding:16px; background:var(--surface2); border-radius:12px; border:1px solid var(--border);">
+                <div style="font-size:1.4rem; margin-bottom:4px;">🤝</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">Free Exchange</div>
+            </div>
+            <div style="flex:1; min-width:120px; padding:16px; background:var(--surface2); border-radius:12px; border:1px solid var(--border);">
+                <div style="font-size:1.4rem; margin-bottom:4px;">🌱</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">Grow Together</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="card animate-in delay-2" id="contact">
+        <div class="section-tag">Contact</div>
+        <h2>Get in Touch</h2>
+        <p>Have questions? We'd love to hear from you. Reach out anytime.</p>
+        <div class="contact-items">
+            <div class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">skillswap@gmail.com</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div>
+                    <div class="contact-label">Phone</div>
+                    <div class="contact-value">+91 98765 43210</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE FORM -->
+    <div class="card card-full animate-in delay-1" id="profile-form">
+        <div class="section-tag">Join Us</div>
+        <h2>Create Your Profile</h2>
+        <p>Fill in your details below and become part of our skill-sharing community.</p>
+
+        <form id="registerForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. Priya Sharma" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="teach">Skill You Can Teach</label>
+                    <input type="text" id="teach" placeholder="e.g. Python Programming" required>
+                </div>
+                <div class="form-group">
+                    <label for="learn">Skill You Want to Learn</label>
+                    <input type="text" id="learn" placeholder="e.g. Guitar" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Skill Category</label>
+                    <select id="category">
+                        <option value="Technology">Technology</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Music">Music</option>
+                        <option value="Cooking">Cooking</option>
+                        <option value="Sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label for="about">About You</label>
+                    <textarea id="about" placeholder="Tell the community a bit about yourself and your experience…"></textarea>
+                </div>
+                <input type="submit" value="Register & Join Community">
+            </div>
+        </form>
+    </div>
+
+    <!-- COMMUNITY TABLE -->
+    <div class="card card-full animate-in delay-2" id="community">
+        <div class="section-tag">Community</div>
+        <h2>Community Members</h2>
+        <p>Discover people with complementary skills. Click a row to connect.</p>
+
+        <div class="table-wrapper">
+            <table id="membersTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Can Teach</th>
+                        <th>Wants to Learn</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="membersBody">
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                                <p>No members yet — be the first to register!</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 <span>Skill Swap Platform</span> · Built with ❤️ as a Student Project</p>
+</footer>
+
+<script>
+    const form = document.getElementById('registerForm');
+    const body = document.getElementById('membersBody');
+    let members = [];
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name     = document.getElementById('name').value.trim();
+        const email    = document.getElementById('email').value.trim();
+        const teach    = document.getElementById('teach').value.trim();
+        const learn    = document.getElementById('learn').value.trim();
+        const category = document.getElementById('category').value;
+
+        if (!name || !teach || !learn) return;
+
+        members.push({ name, email, teach, learn, category });
+        renderTable();
+        form.reset();
+
+        document.getElementById('community').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    function renderTable() {
+        if (members.length === 0) {
+            body.innerHTML = `<tr><td colspan="4"><div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><p>No members yet — be the first to register!</p></div></td></tr>`;
+            return;
+        }
+        body.innerHTML = members.map((m, i) => `
+            <tr style="animation: fadeUp 0.3s ease ${i * 0.05}s both;">
+                <td>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;flex-shrink:0;">${m.name[0].toUpperCase()}</div>
+                        <div>
+                            <div style="font-weight:500;">${m.name}</div>
+                            <div style="font-size:0.72rem;color:var(--text-muted);">${m.email}</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="skill-badge skill-teach">↑ ${m.teach}</span></td>
+                <td><span class="skill-badge skill-learn">↓ ${m.learn}</span></td>
+                <td><span class="cat-badge">${m.category}</span></td>
+            </tr>
+        `).join('');
+    }
+</script>
+</body>
+</html>

@@ -13,7 +13,7 @@
 - Member 2: [J Sreya Krishna] - [College of engineering Pathanapuram]
 
 ### Hosted Project Link
-[index.html]
+https://gowrisudhier-cloud.github.io/SkillSwapPlatform/
 
 ### Project Description
 [A skill swap platform app is a platform where users exchange skills.People list what they can teach and whatthey want to learn.It promotes learning,collaboration,and community growth through skills sharing.]
